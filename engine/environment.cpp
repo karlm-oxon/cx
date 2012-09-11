@@ -38,6 +38,15 @@ cx::engine::environment::~environment()
 
 
 
+/// Summary:  Returns the current aspect ratio of the window.
+float  cx::engine::environment::get_aspect_ratio()
+{
+	// Return the width of the screen divided by the height.
+	return (float)this->software.dimensions.x / (float)this->software.dimensions.y;
+}
+
+
+
 /// Summary:  Initialises OpenGL.
 /// Remarks:  Checks that the system has a recent version of OpenGL installed; then sets up basic OpenGL features, i.e.
 ///           blending and depth testing.
@@ -51,6 +60,9 @@ void  cx::engine::environment::initialise_opengl()
 	// Validate the user's OpenGL version.
 	if (!GLEW_VERSION_2_1)
 		throw std::string( "This software relies on OpenGL 2.1, which is not supported by your system." );
+
+    // Enable multisampling.
+    glEnable( GL_MULTISAMPLE );
 
 	// Enable and configure blending for all rendering the simulation performs.
 	glEnable( GL_BLEND );
@@ -86,6 +98,8 @@ void  cx::engine::environment::initialise_sdl()
 
 	// Set the SDL/OpenGL pre-initialisation options.
 	SDL_GL_SetAttribute( SDL_GL_DOUBLEBUFFER, 1 );
+	SDL_GL_SetAttribute( SDL_GL_MULTISAMPLEBUFFERS, 1 );
+	SDL_GL_SetAttribute( SDL_GL_MULTISAMPLESAMPLES, 8 );
 
 	// Attempt to bind an SDL graphics window.
 	this->software.handle = SDL_SetVideoMode( this->software.dimensions.x, this->software.dimensions.y, this->hardware.graphics->vfmt->BitsPerPixel, this->software.settings );
@@ -123,6 +137,6 @@ void  cx::engine::environment::delegate( SDL_Event  event )
 	// Call the correct function based on the type of event.
 	switch (event.type)
 	{
-		case SDL_VIDEORESIZE: on_resize( event );
+		case SDL_VIDEORESIZE: on_resize( event ); break;
 	}
 }

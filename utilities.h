@@ -13,15 +13,8 @@
 
 
 
-#include <SDL.h>
-#include <glew.h>
-#include <glm.hpp>
-
-#include <fstream>
-#include <sstream>
-#include <string>
-
 #include "utilities/file.h"
+#include "utilities/maths.h"
 #include "utilities/opengl.h"
 
 

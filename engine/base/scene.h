@@ -15,6 +15,7 @@
 
 #include <vector>
 
+#include "camera.h"
 #include "renderable.h"
 #include "../pipeline/program.h"
 
@@ -33,15 +34,19 @@ namespace cx
 			class scene
 			{
 				protected:
+					base::camera*                                camera;
 					std::vector<cx::engine::pipeline::program*>  programs;
 					std::vector<base::renderable*>               renderables;
 
-				public:
-					scene();
+					virtual void  initialise_camera();
 					virtual void  initialise_programs();
 					virtual void  initialise_renderables();
+
+				public:
+					scene() {}
 					virtual void  render();
 
+					base::camera*                                get_camera()      { return camera; }
 					std::vector<cx::engine::pipeline::program*>  get_programs()    { return programs; }
 					std::vector<base::renderable*>               get_renderables() { return renderables; }
 			};

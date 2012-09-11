@@ -22,6 +22,7 @@ cx::engine::pipeline::buffer::buffer( unsigned int target, void* data, int size,
 	// Bind the buffer to OpenGL.
 	glBindBuffer( this->target, this->id );
 	glBufferData( this->target, size, data, usage );
+	glBindBuffer( this->target, NULL );
 }
 
 

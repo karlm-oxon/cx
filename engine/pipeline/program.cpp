@@ -39,6 +39,19 @@ cx::engine::pipeline::program::program( std::vector<cx::engine::pipeline::shader
 
 
 
+/// Summary:  Binds a handle to a GLSL variable.
+/// Remarks:  The binding_function should typically be glGetAttribLocation or glGetUniformLocation.
+int  cx::engine::pipeline::program::bind( std::string variable, PFNGLGETATTRIBLOCATIONPROC binding_function )
+{
+	// Bind a handle to the specified variable in this program, as long as it's valid.
+	int  handle = binding_function( this->id, variable.c_str() );
+	if (handle == -1)
+		throw std::string( "Could not bind a handle to the GLSL variable " ) + variable + std::string( "." );
+	return handle;
+}
+
+
+
 /// Summary:  Destroys a program object.
 /// Remarks:  When the program object is no longer being used, this unloads the program from the programmable pipeline.
 cx::engine::pipeline::program::~program()

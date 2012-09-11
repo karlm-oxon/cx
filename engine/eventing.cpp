@@ -9,6 +9,8 @@
 
 #include "eventing.h"
 
+#include <iostream>
+
 
 
 /// Summary:  Constructs the eventing class and the eventable parent class.
@@ -97,6 +99,6 @@ void  cx::engine::eventing::delegate( SDL_Event  event )
 	// Call the correct function based on the kind of event.
 	switch (event.type)
 	{
-		case SDL_QUIT: on_quit( event );
+		case SDL_QUIT: on_quit( event ); break;
 	}
 }

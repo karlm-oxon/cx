@@ -13,6 +13,10 @@
 
 
 
+#include <SDL.h>
+#include <glew.h>
+#include <glm.hpp>
+
 #include <string>
 
 namespace cx { namespace engine { namespace base { class scene; } } }
@@ -37,7 +41,8 @@ namespace cx
 
 				public:
 					renderable( cx::engine::base::scene* );
-					virtual void  render( void* );
+					virtual glm::mat4  get_transformation();
+					virtual void       render( void* );
 			};
 		}
 	}

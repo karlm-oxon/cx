@@ -13,20 +13,15 @@
 
 
 
-#include <SDL.h>
-#include <glew.h>
-#include <glm.hpp>
-
-#include <map>
-#include <string>
-#include <vector>
-
 #include "engine/environment.h"
 #include "engine/eventing.h"
 
+#include "engine/base/camera.h"
 #include "engine/base/eventable.h"
 #include "engine/base/renderable.h"
+#include "engine/base/scene.h"
 
+#include "engine/pipeline/buffer.h"
 #include "engine/pipeline/shader.h"
 #include "engine/pipeline/program.h"
 

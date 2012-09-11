@@ -40,6 +40,7 @@ namespace cx
 				public:
 					program( std::vector<cx::engine::pipeline::shader> );
 					~program();
+					int  bind( std::string, PFNGLGETATTRIBLOCATIONPROC );
 
 					unsigned int get_id() { return id; }
 			};

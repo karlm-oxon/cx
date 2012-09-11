@@ -22,6 +22,18 @@ cx::engine::base::renderable::renderable( cx::engine::base::scene*  domain )
 
 
 
+/// Summary:  Dummy member function provides an overridable standard form accessing a child class' model transform.
+/// Remarks:  This function cannot be declared pure virtual, as this class must be usable as an interface, rather than
+///           merely an abstract class. The implementation of this function should return the model transform necessary
+///           to translate and scale the object coordinates into world coordinates.
+glm::mat4  cx::engine::base::renderable::get_transformation()
+{
+	// This member function may not be called, so raise an exception at runtime if it is.
+	throw std::string( "The member function base::renderable::get_transformation must be overridden by the child class." );
+}
+
+
+
 /// Summary:  Dummy member function provides an overridable standard form for a child class' rendering subroutine.
 /// Remarks:  This function cannot be declared pure virtual, as this class must be usable as an interface, rather than
 ///           merely an abstract class. The implementation of this function should send the correct geometry to the
