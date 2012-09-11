@@ -1,5 +1,5 @@
 ///
-/// Summary:  Contains static utility functions pertaining to the modification of the host filesystem.
+/// Summary:  Gets a complex function from user and parses it
 /// Authors:  Jack K., Karl M.
 ///
 
