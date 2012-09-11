@@ -58,7 +58,7 @@ void cx::simulation::chunk::create()
 		{
 			// Create a four-dimensional vertex and compute its complex z-value.
 			chunk::vertex        sample;
-			std::complex<float>  z = chunk::specification.function( std::complex<float>( (x + this->configuration.center.x / chunk::specification.scale_world) * chunk::specification.scale_data, (y + this->configuration.center.y / chunk::specification.scale_world) * chunk::specification.scale_data ) );
+			complexf  z = chunk::specification.function( complexf( (x + this->configuration.center.x / chunk::specification.scale_world) * chunk::specification.scale_data, (y + this->configuration.center.y / chunk::specification.scale_world) * chunk::specification.scale_data ) );
 
 			// Set the values of the four-dimensional vertex.
 			sample.position.x = x;

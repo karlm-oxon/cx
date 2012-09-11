@@ -4,7 +4,7 @@
 
 ///
 ///
-cx::simulation::graph::graph( std::complex<float>  (*function)( std::complex<float> ), cx::engine::environment* engine, cx::engine::eventing* events ) : cx::engine::base::eventable( events ), cx::engine::base::scene()
+cx::simulation::graph::graph(std::function<complexf(complexf)> function, cx::engine::environment* engine, cx::engine::eventing* events ) : cx::engine::base::eventable( events ), cx::engine::base::scene()
 {
 	// Set the reference to the SDL and OpenGL environment this scene renders into.
 	this->engine   = engine;

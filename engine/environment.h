@@ -13,7 +13,7 @@
 
 
 
-#include <SDL.h>
+#include <SDL/SDL.h>
 #include <glew.h>
 #include <glm.hpp>
 
