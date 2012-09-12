@@ -41,7 +41,7 @@ namespace cx
 
 				public:
 					eventable( cx::engine::eventing* );
-					virtual void  delegate( SDL_Event );
+					virtual void  delegate( SDL_Event )=0;
 			};
 		}
 	}

@@ -18,33 +18,39 @@
 #include <ext.hpp>
 
 #include "../eventing.h"
+#include "eventable.h"
 
 
 
-namespace cx
-{
-	namespace engine
-	{
-		namespace base
-		{
-			///
-			///
-			class camera
-			{
-				private:
-					glm::mat4  look;
 
-				protected:
-					glm::vec3  position;
+namespace cx {
+    namespace engine {
+        namespace base {
+            ///
+            ///
 
-				public:
-					camera( glm::vec3, glm::vec3, glm::vec3 );
-					glm::mat4  get_transformation();
+            class camera : cx::engine::base::eventable {
+                
 
-					glm::vec3  get_position() { return position; }
-			};
-		}
-	}
+            protected:
+                glm::vec3 position;
+                glm::mat4 look;
+                void send_move_message ();
+            public:
+                camera(glm::vec3, glm::vec3, glm::vec3, cx::engine::eventing*);
+                camera();
+                virtual glm::mat4 get_transformation();
+
+                glm::vec3 get_position() {
+                    return position;
+                }
+                virtual void delegate (SDL_Event){};
+
+                virtual void update(GLuint time_elapsed) {
+                };
+            };
+        }
+    }
 }
 
 

@@ -26,8 +26,11 @@
 #include "../engine/base/eventable.h"
 #include "../engine/base/renderable.h"
 #include "../engine/base/scene.h"
+#include "../utilities/timer.h"
 #include "../engine/pipeline/program.h"
 #include "../engine/pipeline/shader.h"
+#include "../engine/flyingcamera.h"
+#include "../utilities/framepersecond.h"
 
 namespace cx {
     namespace simulation {
@@ -75,6 +78,9 @@ namespace cx {
 
             cx::simulation::chunk* primary;
             std::vector<cx::simulation::chunk*> chunks;
+            
+            cx::utilities::timer ftimer;
+            cx::utilities::frame_per_second fps;
 
             void on_idle(SDL_Event);
             void on_move(SDL_Event);
