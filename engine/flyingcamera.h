@@ -26,19 +26,21 @@ namespace cx {
         private:
             
             //Timer for finding mouse motion speed
-            cx::utilities::timer mouse_time;
+         //   cx::utilities::timer mouse_time;
 
             //Sensitivity to key presses
             struct {
                 double trans = 0.01;
-                double mouse = 0.05;
+                double mouse = 0.005;
                 double rot = 0.0005;
+                double wheel = 0.05;
             } sensitivity;
-
+            float wheel=0;
             //Orientation of camera
             cx::utilities::quaternionf orientation;
             //Moves orientation of camera with the mouse
             void on_mouse_move(SDL_Event);
+            void on_mouse_button(SDL_Event event);
             //Called every frame to move the camera with the keys
             void update(GLuint time_elapsed);
         public:

@@ -24,7 +24,7 @@ int main(int argc, char** argv);
 
 
 int main(int argc, char** argv) {
-    try {
+   // try {
         cx::engine::eventing* events = new cx::engine::eventing();
         cx::engine::environment* engine = new cx::engine::environment(std::string("Hello, world!"), glm::ivec2(640, 480), events);
         
@@ -37,12 +37,12 @@ int main(int argc, char** argv) {
         delete events;
 
         return 0;
-    } catch (std::string e) {
-        std::cerr << e << std::endl;
+ //   } catch (std::string e) {
+  //      std::cerr << e << std::endl;
 
         return -1;
     }
-}
+//}
 
 
 

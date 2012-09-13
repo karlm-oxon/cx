@@ -29,7 +29,7 @@ namespace cx {
             ///
             ///
 
-            class camera : cx::engine::base::eventable {
+            class camera : public cx::engine::base::eventable {
                 
 
             protected:

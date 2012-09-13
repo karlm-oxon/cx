@@ -62,7 +62,7 @@ namespace cx {
         inline void quaternionf::normalise() {
             float TOLERANCE = 0.0001;
             float mag = sqrt(s * s + glm::dot(v, v));
-            if (mag != 0 && fabs(mag - 1) > TOLERANCE) {
+            if (mag != 0.0f && fabs(mag - 1) > TOLERANCE) {
                 s = s / mag;
                 v = v * (1 / mag);
             }
