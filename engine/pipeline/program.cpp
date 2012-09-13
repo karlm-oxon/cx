@@ -46,11 +46,24 @@ int  cx::engine::pipeline::program::bind( std::string variable, PFNGLGETATTRIBLO
 	// Bind a handle to the specified variable in this program, as long as it's valid.
 	int  handle = binding_function( this->id, variable.c_str() );
 	if (handle == -1)
-		throw std::string( "Could not bind a handle to the GLSL variable " ) + variable + std::string( "." );
+		//throw std::string( "Could not bind a handle to the GLSL variable " ) + variable + std::string( "." );
+            std::cerr<<std::string( "Could not bind a handle to the GLSL variable " ) + variable + std::string( "." );
 	return handle;
 }
 
+/// Summary:  Binds a handle to an uniform GLSL variable.
+/// 
+int  cx::engine::pipeline::program::bindUniform( std::string variable)
+{
+    return bind (variable, glGetUniformLocation);
+}
 
+/// Summary:  Binds a handle to an attributeGLSL variable.
+/// 
+int  cx::engine::pipeline::program::bindAttribute( std::string variable)
+{
+    return bind (variable, glGetAttribLocation);
+}
 
 /// Summary:  Destroys a program object.
 /// Remarks:  When the program object is no longer being used, this unloads the program from the programmable pipeline.

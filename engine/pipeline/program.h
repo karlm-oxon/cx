@@ -21,6 +21,8 @@
 
 #include "shader.h"
 
+#include <iostream>
+
 
 
 namespace cx
@@ -41,6 +43,8 @@ namespace cx
 					program( std::vector<cx::engine::pipeline::shader> );
 					~program();
 					int  bind( std::string, PFNGLGETATTRIBLOCATIONPROC );
+                                        int bindUniform (std::string);
+                                        int bindAttribute (std::string);
 
 					unsigned int get_id() { return id; }
 			};

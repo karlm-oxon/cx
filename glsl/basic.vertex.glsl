@@ -5,6 +5,8 @@ attribute  vec4  position;
 attribute  vec4  color;
 uniform    mat4  modelview;
 uniform    mat4  projection;
+uniform    float time;
+uniform    float rate; 
 
 // Declare programmable pipeline variables.
 varying  vec3  position_interpolated;
@@ -14,7 +16,8 @@ varying  vec4  color_interpolated;
 void  main()
 {
 	// Create the vertex in object space, and then trasnform it into camera then projection space.
-	vec4  vertex_obj = vec4( position.x, position.y, position.z, 1.0 );
+        float ratetime = rate*time;
+	vec4  vertex_obj = vec4( position.xy, position.z*sin(ratetime)+position.z*cos(ratetime), 1.0 );
 	vec4  vertex_cmr = modelview * vertex_obj;
 	vec4  vertex_prj = projection * vertex_cmr;
 

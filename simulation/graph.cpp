@@ -5,10 +5,12 @@
 ///
 ///
 
-cx::simulation::graph::graph(std::function<complexf(complexf) > function, cx::engine::environment* engine, cx::engine::eventing* events) : cx::engine::base::eventable(events), cx::engine::base::scene() {
+cx::simulation::graph::graph(std::function<complexf(complexf) > function,float rate, cx::engine::environment* engine, cx::engine::eventing* events) : cx::engine::base::eventable(events), cx::engine::base::scene() {
     // Set the reference to the SDL and OpenGL environment this scene renders into.
     this->engine = engine;
     this->function = function;
+    
+    this->rate = rate;
 
     // Call the resource initialisation subroutines.
     initialise_camera();
@@ -50,6 +52,9 @@ void cx::simulation::graph::on_idle(SDL_Event event) {
         // Send the transformations to the programmable pipeline.
         glUniformMatrix4fv(uniforms.mat4_modelview, 1, GL_FALSE, glm::value_ptr(modelview));
         glUniformMatrix4fv(uniforms.mat4_projection, 1, GL_FALSE, glm::value_ptr(projection));
+        
+        glUniform1f (uniforms.float_time,ftimer.get_total_time());
+         glUniform1f (uniforms.float_rate,rate);
 
         // Call the rendering subroutine for this renderable object.
         (*i)->render((void*) &attributes);
@@ -114,10 +119,12 @@ void cx::simulation::graph::initialise_programs() {
     this->programs.push_back(basic);
 
     // Set up the attributes and uniforms passed to the programmable pipeline.
-    this->attributes.vec4_position = this->programs[0]->bind("position", glGetAttribLocation);
-    this->attributes.vec4_color = this->programs[0]->bind("color", glGetAttribLocation);
-    this->uniforms.mat4_modelview = this->programs[0]->bind("modelview", glGetUniformLocation);
-    this->uniforms.mat4_projection = this->programs[0]->bind("projection", glGetUniformLocation);
+    this->attributes.vec4_position = this->programs[0]->bindAttribute("position");
+    this->attributes.vec4_color = this->programs[0]->bindAttribute("color");
+    this->uniforms.mat4_modelview = this->programs[0]->bindUniform("modelview");
+    this->uniforms.mat4_projection = this->programs[0]->bindUniform("projection");
+    this->uniforms.float_time = this->programs[0]->bindUniform("time");
+    this->uniforms.float_rate = this->programs[0]->bindUniform("rate");
 }
 
 

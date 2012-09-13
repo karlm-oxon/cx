@@ -55,6 +55,8 @@ namespace cx {
             struct uniform_list {
                 unsigned int mat4_modelview;
                 unsigned int mat4_projection;
+                unsigned int float_time;
+                unsigned int float_rate;
             };
 
         public:
@@ -67,7 +69,7 @@ namespace cx {
                 unsigned int vec4_color;
             };
 
-
+            float rate;
 
         protected:
             cx::engine::environment* engine;
@@ -90,7 +92,7 @@ namespace cx {
             virtual void initialise_renderables();
 
         public:
-            graph(std::function<complexf(complexf)>, cx::engine::environment*, cx::engine::eventing*);
+            graph(std::function<complexf(complexf)>,float rate, cx::engine::environment*, cx::engine::eventing*);
 
             virtual void delegate(SDL_Event);
         };
