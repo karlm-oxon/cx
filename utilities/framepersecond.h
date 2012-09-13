@@ -16,7 +16,7 @@ namespace cx{
 
 class frame_per_second {
     timer clock;
-    GLuint frames;
+    GLuint frames = 0;
 public:
     void countfps();
 

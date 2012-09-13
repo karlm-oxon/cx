@@ -54,12 +54,12 @@ void cx::simulation::graph::on_idle(SDL_Event event) {
         // Call the rendering subroutine for this renderable object.
         (*i)->render((void*) &attributes);
     }
-    //Relax the thread
-    this->ftimer.wait();
+   
     //Count FPS
     this->fps.countfps();
     // Tell SDL to display the contents of the OpenGL rendered scene.
     SDL_GL_SwapBuffers();
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
 
@@ -96,7 +96,7 @@ void cx::simulation::graph::delegate(SDL_Event event) {
 
 void cx::simulation::graph::initialise_camera() {
     // Set up a static camera.
-    this->camera = new cx::engine::flying_camera(glm::vec3(0.0, 0.0, -10.0), glm::vec3(0.0, 0.0, -10.0), glm::vec3(0.0, 0.0, 1.0), events);
+    this->camera = new cx::engine::flying_camera(glm::vec3(0.0, 0.0, -10.0), glm::vec3(0.0, 0.0, -1.0), glm::vec3(0.0, 0.0, 1.0), events);
 }
 
 

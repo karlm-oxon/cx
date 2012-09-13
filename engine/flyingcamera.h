@@ -17,7 +17,7 @@ namespace cx {
 #include "base/camera.h"
 #include "../utilities/timer.h"
 #include "environment.h"
-#include <gtx/quaternion.hpp>
+#include "../utilities/GLQuaternion.h"
 
 namespace cx {
     namespace engine {
@@ -30,13 +30,13 @@ namespace cx {
 
             //Sensitivity to key presses
             struct {
-                double trans = 0.001;
+                double trans = 0.01;
                 double mouse = 0.05;
                 double rot = 0.0005;
             } sensitivity;
 
             //Orientation of camera
-            glm::quat orientation;
+            cx::utilities::quaternionf orientation;
             //Moves orientation of camera with the mouse
             void on_mouse_move(SDL_Event);
             //Called every frame to move the camera with the keys

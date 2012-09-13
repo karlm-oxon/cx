@@ -5,7 +5,8 @@ void cx::engine::flying_camera::update(GLuint time_elapsed) {
     Uint8*keys = SDL_GetKeyState(NULL);
     //Set the velocity of the camera taking into account the orientation and 
     // which keys are pressed
-    glm::vec3 vel = glm::rotate(orientation,
+     orientation.normalise();
+    glm::vec3 vel = orientation.rotate(
             glm::vec3((keys[SDLK_d] - keys[SDLK_a]) * sensitivity.trans,
             (keys[SDLK_w] - keys[SDLK_s]) * sensitivity.trans,
             0.0f));
@@ -15,10 +16,11 @@ void cx::engine::flying_camera::update(GLuint time_elapsed) {
     //Update the state variables
     orientation =
             orientation
-            * glm::angleAxis(time_elapsed*rollVel, glm::vec3(0, 1, 0))
-            * glm::angleAxis(time_elapsed*pitchVel, glm::vec3(1, 0, 0))
-            * glm::angleAxis(time_elapsed*yawVel, glm::vec3(0, 0, 1));
+            * cx::utilities::quaternionf (glm::vec3(0, 1, 0),time_elapsed*rollVel)
+            * cx::utilities::quaternionf( glm::vec3(1, 0, 0),time_elapsed*pitchVel)
+            * cx::utilities::quaternionf (glm::vec3(0, 0, 1),time_elapsed*yawVel);
     position += (float) time_elapsed*vel;
+   
     //If position has changed, update
     if (vel.x != 0 || vel.y != 0 || vel.z != 0)
         this->send_move_message();
@@ -34,7 +36,7 @@ void cx::engine::flying_camera::on_mouse_move(SDL_Event) {
 }
 
 glm::mat4 cx::engine::flying_camera::get_transformation() {
-    return look * glm::toMat4(orientation) * glm::translate(glm::mat4x4(1.0f), -position);
+    return look * orientation.getMatrix() * glm::translate(glm::mat4x4(1.0f), -position);
 
 }
 
@@ -47,10 +49,10 @@ cx::engine::flying_camera::flying_camera(glm::vec3 position, glm::vec3 direction
     // Set the view transformation with a glm::lookAt call.
     glm::vec3 ahead(0, 1, 0);
     this->look = glm::lookAt(glm::vec3(0, 0, 0), ahead, up);
- //   orientation = glm::angleAxis(std::acos(glm::dot(ahead, direction)),
-//            glm::normalize(glm::cross(ahead, direction))
-//            );
-    orientation = glm::angleAxis (0.0f,glm::vec3(0.0,0.0,1.0));
+    orientation = cx::utilities::quaternionf(glm::normalize(glm::cross(ahead, direction)),
+            std::acos(glm::dot(ahead, direction)*180/std::acos( -1.0f ))
+            );
+ //   orientation = glm::angleAxis (0.0f,glm::vec3(0.0,0.0,1.0));
     // Send an event to the message loop signifying the position the scene is rendered from.
     this->send_move_message();
 }
