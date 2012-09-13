@@ -29,10 +29,20 @@ void cx::engine::flying_camera::update(GLuint time_elapsed) {
 
 
 //These don't do anything yet
-void cx::engine::flying_camera::delegate(SDL_Event) {
+void cx::engine::flying_camera::delegate(SDL_Event event) {
+      // Call the correct function based on the type of event.
+    switch (event.type) {
+        case SDL_MOUSEMOTION: on_mouse_move(event);
+            break;
+    }
 };
 
-void cx::engine::flying_camera::on_mouse_move(SDL_Event) {
+void cx::engine::flying_camera::on_mouse_move(SDL_Event event) {
+    GLint time=mouse_time.get_time_elapsed();
+   orientation=orientation
+            *cx::utilities::quaternionf (glm::vec3(1,0,0),-0.005*event.motion.yrel/time)
+            *cx::utilities::quaternionf (glm::vec3(0,0,1),-0.005*event.motion.xrel/time);
+    orientation.normalise();
 }
 
 glm::mat4 cx::engine::flying_camera::get_transformation() {
