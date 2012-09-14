@@ -31,6 +31,7 @@
 #include "../engine/pipeline/shader.h"
 #include "../engine/flyingcamera.h"
 #include "../utilities/framepersecond.h"
+#include "../utilities/complexfunction.h"
 
 namespace cx {
     namespace simulation {
@@ -73,7 +74,7 @@ namespace cx {
 
         protected:
             cx::engine::environment* engine;
-            std::function<complexf(complexf)> function;
+            cx::utilities::complex_function function;
 
             cx::simulation::graph::attribute_list attributes;
             cx::simulation::graph::uniform_list uniforms;
@@ -92,7 +93,7 @@ namespace cx {
             virtual void initialise_renderables();
 
         public:
-            graph(std::function<complexf(complexf)>,float rate, cx::engine::environment*, cx::engine::eventing*);
+            graph(float rate, cx::engine::environment*, cx::engine::eventing*);
 
             virtual void delegate(SDL_Event);
         };
