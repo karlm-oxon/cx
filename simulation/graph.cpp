@@ -30,10 +30,7 @@ cx::simulation::graph::graph(float rate, cx::engine::environment* engine, cx::en
 ///
 ///
 
-void cx::simulation::graph::on_idle(SDL_Event event) {
-    GLuint time_elapsed = this->ftimer.get_time_elapsed();
-    this->camera->update(time_elapsed);
-
+void cx::simulation::graph::render(){
     // Set up the programmable pipeline program.
     glUseProgram(this->programs[0]->get_id());
 
@@ -60,11 +57,24 @@ void cx::simulation::graph::on_idle(SDL_Event event) {
         (*i)->render((void*) &attributes);
     }
    
-    //Count FPS
-    this->fps.countfps();
+    
     // Tell SDL to display the contents of the OpenGL rendered scene.
     SDL_GL_SwapBuffers();
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    
+}
+
+void cx::simulation::graph::on_idle(SDL_Event event) {
+    //Get time between frames
+    GLuint time_elapsed = this->ftimer.get_time_elapsed();
+    //Move camera appropriately
+    this->camera->update(time_elapsed);
+    //Render scene
+    this->render();
+    //Count FPS
+    this->fps.countfps();
+    
+    
 }
 
 

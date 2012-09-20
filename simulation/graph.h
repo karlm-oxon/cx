@@ -47,7 +47,7 @@ namespace cx {
         ///
         ///
 
-        class graph : cx::engine::base::eventable, cx::engine::base::scene {
+        class graph : public cx::engine::base::eventable, cx::engine::base::scene {
         protected:
 
             ///
@@ -94,7 +94,7 @@ namespace cx {
 
         public:
             graph(float rate, cx::engine::environment*, cx::engine::eventing*);
-
+            void render();
             virtual void delegate(SDL_Event);
         };
     }

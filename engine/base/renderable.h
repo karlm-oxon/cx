@@ -41,8 +41,8 @@ namespace cx
 
 				public:
 					renderable( cx::engine::base::scene* );
-					virtual glm::mat4  get_transformation();
-					virtual void       render( void* );
+					virtual glm::mat4  get_transformation()=0;
+					virtual void       render( void* )=0;
 			};
 		}
 	}

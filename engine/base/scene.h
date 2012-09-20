@@ -38,13 +38,13 @@ namespace cx
 					std::vector<cx::engine::pipeline::program*>  programs;
 					std::vector<base::renderable*>               renderables;
 
-					virtual void  initialise_camera();
-					virtual void  initialise_programs();
-					virtual void  initialise_renderables();
+					virtual void  initialise_camera()=0;
+					virtual void  initialise_programs()=0;
+					virtual void  initialise_renderables()=0;
 
 				public:
 					scene() {}
-					virtual void  render();
+					virtual void  render()=0;
 
 					base::camera*                                get_camera()      { return camera; }
 					std::vector<cx::engine::pipeline::program*>  get_programs()    { return programs; }
