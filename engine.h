@@ -24,6 +24,7 @@
 #include "engine/pipeline/buffer.h"
 #include "engine/pipeline/shader.h"
 #include "engine/pipeline/program.h"
+#include "engine/pipeline/texture.h"
 
 
 
