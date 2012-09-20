@@ -40,7 +40,8 @@ namespace cx
 					unsigned int type;
 
 				public:
-					shader( unsigned int, std::string );
+					shader( unsigned int,const std::string, bool fromString = false );
+                                        
 					~shader();
 
 					unsigned int get_id()   { return id; }

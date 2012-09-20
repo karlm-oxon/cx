@@ -121,8 +121,8 @@ void cx::simulation::graph::initialise_camera() {
 
 void cx::simulation::graph::initialise_programs() {
     // Create the vertex and fragment shaders.
-    cx::engine::pipeline::shader basic_fragment(GL_FRAGMENT_SHADER, std::string("basic.fragment.glsl"));
-    cx::engine::pipeline::shader basic_vertex(GL_VERTEX_SHADER, std::string("basic.vertex.glsl"));
+    cx::engine::pipeline::shader basic_fragment(GL_FRAGMENT_SHADER, "basic.fragment.glsl",false);
+    cx::engine::pipeline::shader basic_vertex(GL_VERTEX_SHADER, "basic.vertex.glsl",false);
 
     // Build the shaders into a program.
     cx::engine::pipeline::program* basic = new cx::engine::pipeline::program({basic_vertex, basic_fragment});

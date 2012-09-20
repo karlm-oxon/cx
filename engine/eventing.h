@@ -49,6 +49,7 @@ namespace cx
 
 			public:
 				eventing();
+                                virtual ~eventing(){};
 				void  hook( unsigned int, base::eventable* );
 				void  start();
 				void  unhook( unsigned int, base::eventable* );

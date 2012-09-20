@@ -63,7 +63,7 @@ namespace cx
 
 			public:
 				environment( std::string, glm::ivec2, cx::engine::eventing* );
-				~environment();
+				virtual ~environment();
 				float  get_aspect_ratio();
 
 				virtual void delegate( SDL_Event );

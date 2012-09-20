@@ -14,16 +14,27 @@
 /// Summary:  Constructs a shader object.
 /// Remarks:  Automatically creates a shader of the specified type, by loading the contents of the file given and then
 ///           sending this GLSL code to the OpenGL shader compiler.
-cx::engine::pipeline::shader::shader( unsigned int type, std::string filename )
+cx::engine::pipeline::shader::shader( unsigned int type,const std::string file, bool fromString )
 {
 	// Set the type of this shader.
 	this->type = type;
-
+        
+        std::string  code;
+	const char*  code_cstr ;
+	int          code_length;
+        
+        if (!fromString){
 	// Load the source code from the file.
-	std::string  code        = cx::utilities::file::contents( filename );
-	const char*  code_cstr   = code.c_str();
-	int          code_length = code.size();
-
+	 code        = cx::utilities::file::contents( file );
+        }
+        
+        else {
+           code=file; 
+        }
+        
+        code_cstr   = code.c_str();
+	code_length = code.size();
+        
 	// Check that the file is not blank.
 	if (code.size() == 0)
 		throw std::string( "Shader instantiated with a blank file." );

@@ -92,7 +92,7 @@ void  cx::engine::environment::initialise_sdl()
 		throw std::string( SDL_GetError() );
 
 	// Set the SDL graphics options.
-	this->software.settings  = SDL_OPENGL | SDL_HWPALETTE;                                                          // Standard OpenGL binding with SDL-controlled colour palette.
+	this->software.settings  = SDL_OPENGL | SDL_HWPALETTE | SDL_RESIZABLE;                                                          // Standard OpenGL binding with SDL-controlled colour palette.
 	this->software.settings |= (this->hardware.graphics->hw_available == 1) ? SDL_HWSURFACE : SDL_SWSURFACE;        // Use graphics hardware if available, else, fall back to software rendering.
 	this->software.settings |= (this->hardware.graphics->blit_hw == 1)      ? SDL_HWACCEL   : 0;                    // Use hardware-accelerated blitting if available, else, fall back to software blitting.
 
