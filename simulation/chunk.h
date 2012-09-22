@@ -49,7 +49,8 @@ namespace cx {
 
             struct vertex {
                 glm::vec4 position;
-                glm::vec4 color;
+                glm::vec4 colour;
+                glm::vec4 normal;
             };
 
         public:
@@ -77,16 +78,52 @@ namespace cx {
                 float scale_data;
             };
 
+            struct realpartialfunctionx {
+                float helpery;
+                std::function<complexf(complexf)>* function;
+                float operator () (float x){
+                    return  (*function) (complexf (x,helpery)).real(); 
+                }
+            };
+            
+             struct realpartialfunctiony {
+                float helperx;
+                std::function<complexf(complexf)>* function;
+                float operator () (float y){
+                    return  (*function) (complexf (helperx,y)).real(); 
+                }
+            };
+
+             struct imagpartialfunctionx {
+                float helpery;
+                std::function<complexf(complexf)>* function;
+                float operator () (float x){
+                    return  (*function) (complexf (x,helpery)).imag(); 
+                }
+            };
+            
+             struct imagpartialfunctiony {
+                float helperx;
+                std::function<complexf(complexf)>* function;
+                float operator () (float y){
+                    return  (*function) (complexf (helperx,y)).imag(); 
+                }
+            };
 
 
         protected:
             cx::simulation::chunk::local_parameters configuration;
+            cx::simulation::chunk::realpartialfunctionx real_partialx;
+            cx::simulation::chunk::realpartialfunctiony real_partialy;
+            cx::simulation::chunk::imagpartialfunctionx imag_partialx;
+            cx::simulation::chunk::imagpartialfunctiony imag_partialy;
             std::vector<int> indices;
             std::vector<cx::simulation::chunk::vertex>* vertices;
 
             std::vector<cx::engine::pipeline::buffer*> buffers_index;
             std::vector<cx::engine::pipeline::buffer*> buffers_vertex;
-
+            cx::utilities::Ridders<float, 5> differentiate;
+           
         public:
             static cx::simulation::chunk::global_parameters specification;
 

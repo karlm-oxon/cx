@@ -23,7 +23,10 @@ cx::simulation::chunk::chunk( chunk::local_parameters  configuration, cx::engine
 {
 	// Set up the parameters for this chunk.
 	this->configuration = configuration;
-
+        this->real_partialy.function = &specification.function;
+        this->real_partialx.function = &specification.function;
+         this->imag_partialy.function = &specification.function;
+        this->imag_partialx.function = &specification.function;
 	// Create the vertices arrays in which to store vertices objects of varying levels of detail.
 	vertices = new std::vector<cx::simulation::chunk::vertex>[chunk::specification.levels_of_detail + 1];
 
@@ -58,7 +61,18 @@ void cx::simulation::chunk::create()
 		{
 			// Create a four-dimensional vertex and compute its complex z-value.
 			chunk::vertex        sample;
-			complexf  z = chunk::specification.function( complexf( (x + this->configuration.center.x / chunk::specification.scale_world) * chunk::specification.scale_data, (y + this->configuration.center.y / chunk::specification.scale_world) * chunk::specification.scale_data ) );
+                        float xp = (x + this->configuration.center.x / chunk::specification.scale_world)*chunk::specification.scale_data;
+                        float yp = (y + this->configuration.center.y / chunk::specification.scale_world)*chunk::specification.scale_data;
+			complexf  z = chunk::specification.function( complexf(xp,yp));
+                        
+                        real_partialx.helpery = yp;
+                        sample.normal.x = differentiate (real_partialx, xp,1.0f);
+                        real_partialy.helperx = xp;
+                        sample.normal.y = differentiate (real_partialy, yp,1.0f);
+                        imag_partialx.helpery = yp;
+                        sample.normal.z = differentiate (imag_partialx, xp,1.0f);
+                        imag_partialy.helperx = xp;
+                        sample.normal.w = differentiate (imag_partialy, yp,1.0f);
 
 			// Set the values of the four-dimensional vertex.
 			sample.position.x = x;
@@ -67,7 +81,7 @@ void cx::simulation::chunk::create()
 			sample.position.w = z.imag() / chunk::specification.scale_data;
 
 			// Set the colour of the vertex.
-			sample.color = cx::utilities::maths::angle_to_hue( glm::atan2( sample.position.w, sample.position.z ) );
+			sample.colour = cx::utilities::maths::angle_to_hue( glm::atan2( sample.position.w, sample.position.z ) );
 
 			//std::cout << "(" << sample.position.x << ", " << sample.position.y << ", " << sample.position.z << ", " << sample.position.w << ") ~ (" << sample.color.x << ", " << sample.color.y << ", " << sample.color.z << ", " << sample.color.w << ")" << std::endl;
 
@@ -100,7 +114,8 @@ void  cx::simulation::chunk::generate( unsigned int n )
 				// Generate the vertex for this grid coordinate.
 				chunk::vertex  sample;
 				sample.position = vertices[n - 1][M * x + y].position;
-				sample.color    = vertices[n - 1][M * x + y].color;
+				sample.colour    = vertices[n - 1][M * x + y].colour;
+                                sample.normal    = vertices[n - 1][M * x + y].normal;
 
 				// Push it onto the new grid.
 				vertices[n].push_back( sample );
@@ -114,10 +129,14 @@ void  cx::simulation::chunk::generate( unsigned int n )
 		int  k[4] = { 1,  N,      1,              N };
 		for (int  l = 0; l < 4; l++)
 		{
-			vertices[n][j[l]].position.z = (vertices[n][j[l] - k[l]].position.z + vertices[n][j[l] + k[l]].position.z) / 2;
-			vertices[n][j[l]].position.w = (vertices[n][j[l] - k[l]].position.w + vertices[n][j[l] + k[l]].position.w) / 2;
-
-			vertices[n][j[l]].color = glm::mix( vertices[n][j[l] - k[l]].color, vertices[n][j[l] + k[l]].color, 0.5 );
+			vertices[n][j[l]].position.z = (vertices[n][j[l] - k[l]].position.z + vertices[n][j[l] + k[l]].position.z) / 2.0f;
+			vertices[n][j[l]].position.w = (vertices[n][j[l] - k[l]].position.w + vertices[n][j[l] + k[l]].position.w) / 2.0f;
+                        
+                        vertices[n][j[l]].normal = (vertices[n][j[l] - k[l]].normal + vertices[n][j[l] + k[l]].normal) / 2.0f;
+                        
+			vertices[n][j[l]].colour = glm::mix( vertices[n][j[l] - k[l]].colour, vertices[n][j[l] + k[l]].colour, 0.5 );
+                        
+                     
 		}
 	}
 
@@ -183,9 +202,11 @@ void  cx::simulation::chunk::render( void*  parameters )
 	// Send the correct vertex information based on the level of detail.
 	glBindBuffer( GL_ARRAY_BUFFER, buffers_vertex[n]->get_id() );
 	glEnableVertexAttribArray( attributes.vec4_position );
-	glEnableVertexAttribArray( attributes.vec4_color );
+	glEnableVertexAttribArray( attributes.vec4_colour );
+        glEnableVertexAttribArray( attributes.vec4_normal );
 	glVertexAttribPointer( attributes.vec4_position, 4, GL_FLOAT, GL_FALSE, sizeof( cx::simulation::chunk::vertex ), (void*)offsetof( cx::simulation::chunk::vertex, position ) );
-	glVertexAttribPointer( attributes.vec4_color,    4, GL_FLOAT, GL_FALSE, sizeof( cx::simulation::chunk::vertex ), (void*)offsetof( cx::simulation::chunk::vertex, color ) );
+	glVertexAttribPointer( attributes.vec4_colour,    4, GL_FLOAT, GL_FALSE, sizeof( cx::simulation::chunk::vertex ), (void*)offsetof( cx::simulation::chunk::vertex, colour ) );
+        glVertexAttribPointer( attributes.vec4_normal,    4, GL_FLOAT, GL_FALSE, sizeof( cx::simulation::chunk::vertex ), (void*)offsetof( cx::simulation::chunk::vertex, normal ) );
 
 	// Draw the vertices.
 	int N  = std::pow( 2.0, chunk::specification.resolution - n ) + 1;
@@ -194,5 +215,6 @@ void  cx::simulation::chunk::render( void*  parameters )
 
     // Unbind the vertex attribute patterns used.
     glDisableVertexAttribArray( attributes.vec4_position );
-    glDisableVertexAttribArray( attributes.vec4_color );
+    glDisableVertexAttribArray( attributes.vec4_colour );
+    glDisableVertexAttribArray( attributes.vec4_normal );
 }

@@ -2,22 +2,27 @@
 
 // Declare program parameters.
 attribute  vec4  position;
-attribute  vec4  color;
+attribute  vec4  colour;
+attribute  vec4 normal;
 uniform    mat4  modelview;
 uniform    mat4  projection;
+uniform    mat3  modelview_invtrans;
 uniform    float time;
 uniform    float rate; 
 
 // Declare programmable pipeline variables.
-varying  vec3  position_interpolated;
-varying  vec4  color_interpolated;
+varying  vec3  cam_position;
+varying  vec4  cam_colour;
+varying vec3 cam_normal;
 
 // The main entry point for the vertex shader.
 void  main()
 {
 	// Create the vertex in object space, and then trasnform it into camera then projection space.
         float ratetime = rate*time;
-	vec4  vertex_obj = vec4( position.xy, position.z*sin(ratetime)+position.z*cos(ratetime), 1.0 );
+	float sintime = sin(ratetime);
+	float costime = cos(ratetime);
+	vec4  vertex_obj = vec4( position.xy, position.z*sintime+position.z*costime, 1.0 );
 	vec4  vertex_cmr = modelview * vertex_obj;
 	vec4  vertex_prj = projection * vertex_cmr;
 
@@ -25,6 +30,7 @@ void  main()
 	gl_Position = vertex_prj;
 
 	// Pass the fragment shader the calculated values.
-	position_interpolated = vertex_prj.xyz;
-	color_interpolated    = color;
+	cam_position = vertex_cmr.xyz;
+	cam_colour    = colour;
+	cam_normal  = normalize(modelview_invtrans*vec3(normal.xy*sintime + normal.zw*costime,1.0));
 }

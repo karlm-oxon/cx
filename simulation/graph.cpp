@@ -16,6 +16,7 @@ cx::simulation::graph::graph(float rate, cx::engine::environment* engine, cx::en
     initialise_camera();
     initialise_programs();
     initialise_renderables();
+    initialise_lights();
 
     //Start the timer
     this->ftimer.reset_start();
@@ -38,6 +39,7 @@ void cx::simulation::graph::render(){
     glm::mat4 model;
     glm::mat4 view = camera->get_transformation();
     glm::mat4 projection = (glm::mat4)glm::perspective(45.0, (double) this->engine->get_aspect_ratio(), 1.0, 256.0);
+    glm::mat3 modelview_invtrans;
 
     // Iterate over all renderable objects.
     for (std::vector<cx::engine::base::renderable*>::iterator i = renderables.begin(); i != renderables.end(); i++) {
@@ -45,13 +47,17 @@ void cx::simulation::graph::render(){
         glm::mat4 modelview;
         model = (*i)->get_transformation();
         modelview = view * model;
+        modelview_invtrans = glm::inverse(glm::transpose(glm::mat3(modelview)));
 
         // Send the transformations to the programmable pipeline.
         glUniformMatrix4fv(uniforms.mat4_modelview, 1, GL_FALSE, glm::value_ptr(modelview));
         glUniformMatrix4fv(uniforms.mat4_projection, 1, GL_FALSE, glm::value_ptr(projection));
+        glUniformMatrix3fv(uniforms.mat3_modelview_invtrans, 1, GL_FALSE, glm::value_ptr(modelview_invtrans));
         
         glUniform1f (uniforms.float_time,ftimer.get_total_time());
-         glUniform1f (uniforms.float_rate,rate);
+        glUniform1f (uniforms.float_rate,rate);
+        
+        light->send_uniforms(modelview);
 
         // Call the rendering subroutine for this renderable object.
         (*i)->render((void*) &attributes);
@@ -130,9 +136,11 @@ void cx::simulation::graph::initialise_programs() {
 
     // Set up the attributes and uniforms passed to the programmable pipeline.
     this->attributes.vec4_position = this->programs[0]->bindAttribute("position");
-    this->attributes.vec4_color = this->programs[0]->bindAttribute("color");
+    this->attributes.vec4_colour = this->programs[0]->bindAttribute("colour");
+    this->attributes.vec4_normal = this->programs[0]->bindAttribute("normal");
     this->uniforms.mat4_modelview = this->programs[0]->bindUniform("modelview");
     this->uniforms.mat4_projection = this->programs[0]->bindUniform("projection");
+    this->uniforms.mat3_modelview_invtrans = this->programs[0]->bindUniform("modelview_invtrans");
     this->uniforms.float_time = this->programs[0]->bindUniform("time");
     this->uniforms.float_rate = this->programs[0]->bindUniform("rate");
 }
@@ -157,4 +165,12 @@ void cx::simulation::graph::initialise_renderables() {
     // Push the test chunk onto the renderables list.
     cx::simulation::chunk* c = new cx::simulation::chunk(p, this);
     this->renderables.push_back(c);
+}
+
+
+void cx::simulation::graph::initialise_lights() {
+    
+    this->light = new cx::engine::light ("light0", glm::vec4 (0.0,10.0,0.0,1.0), glm::vec4(1.0,  1.0,  1.0, 1.0),
+  glm::vec4(1.0,  1.0,  1.0, 1.0));
+    this->light->bind_uniforms((*this->programs[0]));
 }

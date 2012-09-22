@@ -30,6 +30,7 @@
 #include "../engine/pipeline/program.h"
 #include "../engine/pipeline/shader.h"
 #include "../engine/flyingcamera.h"
+#include "../engine/light.h"
 #include "../utilities/framepersecond.h"
 #include "../utilities/complexfunction.h"
 
@@ -56,6 +57,7 @@ namespace cx {
             struct uniform_list {
                 unsigned int mat4_modelview;
                 unsigned int mat4_projection;
+                unsigned int mat3_modelview_invtrans;
                 unsigned int float_time;
                 unsigned int float_rate;
             };
@@ -67,7 +69,8 @@ namespace cx {
 
             struct attribute_list {
                 unsigned int vec4_position;
-                unsigned int vec4_color;
+                unsigned int vec4_colour;
+                unsigned int vec4_normal;
             };
 
             float rate;
@@ -82,12 +85,15 @@ namespace cx {
             cx::simulation::chunk* primary;
             std::vector<cx::simulation::chunk*> chunks;
             
+            cx::engine::light * light;
+            
             cx::utilities::timer ftimer;
             cx::utilities::frame_per_second fps;
 
             void on_idle(SDL_Event);
             void on_move(SDL_Event);
-
+            
+            virtual void initialise_lights();
             virtual void initialise_camera();
             virtual void initialise_programs();
             virtual void initialise_renderables();
