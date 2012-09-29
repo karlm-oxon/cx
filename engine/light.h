@@ -21,7 +21,7 @@ namespace cx {
     namespace engine {
 
         class light {
-            std::string name;
+            
 
             struct uniform_list {
                 unsigned int position;
@@ -34,24 +34,33 @@ namespace cx {
             };
             uniform_list uniforms;
         public:
-            glm::vec4 position;
-            glm::vec4 diffuse;
-            glm::vec4 specular;
-            float constantAttenuation, linearAttenuation, quadraticAttenuation;
-            float spotCutoff, spotExponent;
-            glm::vec3 spotDirection;
 
-            light(
-                    std::string iname,
-                    glm::vec4 iposition,
-                    glm::vec4 idiffuse,
-                    glm::vec4 ispecular,
-                    float iconstantAttenuation = 0.0f,
-                    float ilinearAttenuation = 1.0f,
-                    float iquadraticAttenuation = 0.0f,
-                    float ispotCutoff = 180.0f,
-                    float ispotExponent = 0.0f,
-                    glm::vec3 ispotDirection = glm::vec3(0, 0, 0));
+            struct parameters {
+                std::string name;
+                glm::vec4 position;
+                glm::vec4 diffuse;
+                glm::vec4 specular;
+                float constantAttenuation, linearAttenuation, quadraticAttenuation;
+                float spotCutoff, spotExponent;
+                glm::vec3 spotDirection;
+
+                parameters() {
+                    name = "DefaultName";
+                    position = glm::vec4 (0.0f,0.0f,0.0f,0.0f);
+                    diffuse = glm::vec4 (0.0f,0.0f,0.0f,0.0f);
+                    specular = glm::vec4 (0.0f,0.0f,0.0f,0.0f);
+                    constantAttenuation = 0.0f;
+                    linearAttenuation = 0.0f;
+                    quadraticAttenuation = 0.0f;
+                    spotCutoff = 180.0f;
+                    spotExponent = 0.0f;
+                    spotDirection = glm::vec3(0, 0, 0);
+                }
+            };
+            
+            parameters params;
+
+            light(parameters iparams) : params(iparams){};
 
             void bind_uniforms(cx::engine::pipeline::program& program);
             void send_uniforms(glm::mat4& modelview);

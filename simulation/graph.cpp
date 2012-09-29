@@ -169,8 +169,12 @@ void cx::simulation::graph::initialise_renderables() {
 
 
 void cx::simulation::graph::initialise_lights() {
-    
-    this->light = new cx::engine::light ("light0", glm::vec4 (0.0,10.0,0.0,1.0), glm::vec4(1.0,  1.0,  1.0, 1.0),
-  glm::vec4(1.0,  1.0,  1.0, 1.0));
+    cx::engine::light::parameters params;
+    params.name = "light0";
+    params.linearAttenuation =1.0f;
+    params.position = glm::vec4 (0.0,0.0,100.0,1.0);
+    params.diffuse = glm::vec4(1.0,  1.0,  1.0, 1.0);
+    params.specular = glm::vec4(0.25,  0.25,  0.25, 0.25);
+    this->light = new cx::engine::light (params);
     this->light->bind_uniforms((*this->programs[0]));
 }

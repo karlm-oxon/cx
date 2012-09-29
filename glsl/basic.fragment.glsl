@@ -19,7 +19,7 @@ struct lightSource
 
 uniform lightSource light0;
 
-vec4 scene_ambient = vec4(0.4, 0.4, 0.4, 1.0);
+vec4 scene_ambient = vec4(0.1, 0.1, 0.1, 1.0);
  
 struct material
 {
@@ -27,13 +27,13 @@ struct material
   float shininess;
 };
 
-material mat = material (vec4 (1.0,1.0,1.0,1.0), 0.3);
+material mat = material (vec4 (1.0,1.0,1.0,1.0), 4.0);
  
 void main()
 {
   
     
-  vec3 normalDirection = (int (gl_FrontFacing)*2-1)* cam_normal;//If back-facing reverse direction
+  vec3 normalDirection = -(int (gl_FrontFacing)*2-1)* cam_normal;//If back-facing reverse direction
   vec3 viewDirection = normalize(vec3(-cam_position));//Camera at origin in camera space
   vec3 lightDirection;
   float attenuation;
@@ -74,8 +74,8 @@ void main()
  
   vec3 specularReflection;
   if (dot(normalDirection, lightDirection) < 0.0) // light source on the wrong side?
-    {
-      specularReflection = vec3(0.0, 0.0, 0.0); // no specular reflection
+   {
+     specularReflection = vec3(0.0, 0.0, 0.0); // no specular reflection
     }
   else // light source on the right side
     {
