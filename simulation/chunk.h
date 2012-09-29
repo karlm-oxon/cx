@@ -47,13 +47,16 @@ namespace cx {
             /// Summary:  Defines a vertex within the chunk.
             /// Remarks:  The position vec4 should be interpreted as (x, y, u(x, y), v(x, y)).
 
-            struct vertex {
+           
+
+        public:
+            
+            //Temporary ease of access
+             struct vertex {
                 glm::vec4 position;
                 glm::vec4 colour;
                 glm::vec4 normal;
             };
-
-        public:
 
             /// Summary:  Defines the settings for a specific chunk instance.
             /// Remarks:  The glm::vec2 center specifies the center of the chunk in world coordinates.
@@ -121,10 +124,14 @@ namespace cx {
             std::vector<cx::simulation::chunk::vertex>* vertices;
 
             std::vector<cx::engine::pipeline::buffer*> buffers_index;
-            std::vector<cx::engine::pipeline::buffer*> buffers_vertex;
+            
             cx::utilities::Ridders<float, 5> differentiate;
            
         public:
+            
+            //Temporary ease of access
+            std::vector<cx::engine::pipeline::buffer*> buffers_vertex;
+            
             static cx::simulation::chunk::global_parameters specification;
 
             chunk(cx::simulation::chunk::local_parameters, cx::engine::base::scene*);

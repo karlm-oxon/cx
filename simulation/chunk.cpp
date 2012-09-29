@@ -66,13 +66,13 @@ void cx::simulation::chunk::create()
 			complexf  z = chunk::specification.function( complexf(xp,yp));
                         
                         real_partialx.helpery = yp;
-                        sample.normal.x = differentiate (real_partialx, xp,1.0f);
+                        sample.normal.x = -differentiate (real_partialx, xp,1.0f);
                         real_partialy.helperx = xp;
-                        sample.normal.y = differentiate (real_partialy, yp,1.0f);
+                        sample.normal.y = -differentiate (real_partialy, yp,1.0f);
                         imag_partialx.helpery = yp;
-                        sample.normal.z = differentiate (imag_partialx, xp,1.0f);
+                        sample.normal.z = -differentiate (imag_partialx, xp,1.0f);
                         imag_partialy.helperx = xp;
-                        sample.normal.w = differentiate (imag_partialy, yp,1.0f);
+                        sample.normal.w = -differentiate (imag_partialy, yp,1.0f);
 
 			// Set the values of the four-dimensional vertex.
 			sample.position.x = x;

@@ -79,8 +79,8 @@ namespace cx {
             cx::engine::environment* engine;
             cx::utilities::complex_function function;
 
-            cx::simulation::graph::attribute_list attributes;
-            cx::simulation::graph::uniform_list uniforms;
+            cx::simulation::graph::attribute_list attributes [2];
+            cx::simulation::graph::uniform_list uniforms [2];
 
             cx::simulation::chunk* primary;
             std::vector<cx::simulation::chunk*> chunks;

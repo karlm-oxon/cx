@@ -22,7 +22,7 @@ void  main()
         float ratetime = rate*time;
 	float sintime = sin(ratetime);
 	float costime = cos(ratetime);
-	vec4  vertex_obj = vec4( position.xy, position.z*sintime+position.z*costime, 1.0 );
+	vec4  vertex_obj = vec4( position.xy, position.z*sintime+position.w*costime, 1.0 );
 	vec4  vertex_cmr = modelview * vertex_obj;
 	vec4  vertex_prj = projection * vertex_cmr;
 

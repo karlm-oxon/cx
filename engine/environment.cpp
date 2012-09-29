@@ -72,6 +72,7 @@ void  cx::engine::environment::initialise_opengl()
     // Enable and configure depth-testing for all rendering the simulation performs.
 	glEnable( GL_DEPTH_TEST );
 	glDepthFunc( GL_LEQUAL );
+    
     glClearDepth( 1.0 );
 }
 
